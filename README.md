@@ -45,8 +45,8 @@ See [[pdf]](https://arxiv.org/abs/1706.06197) for more details, experimental res
 
 ### Requirements
 
-* Python 3.5
-* PyTorch v0.1.12+ - v0.3.1
+* Python 3.8.1+
+* PyTorch v2.4+
 * torchvision
 * CUDA 8.0
 

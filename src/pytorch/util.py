@@ -132,7 +132,7 @@ class TestGroup(object):
             end.synchronize()
             utime += start.elapsed_time(end)
 
-            tloss += loss.data[0]
+            tloss += loss.item()
         tloss /= len(self.trainloader)
         return tloss, ftime, btime, utime
 
@@ -144,14 +144,14 @@ class TestGroup(object):
         model.eval()
         test_loss = 0
         correct = 0
-        for data, target in loader:
-            data, target = Variable(
-                data, volatile=True).cuda(), Variable(target).cuda()
-            output = model(data)
-            test_loss += F.nll_loss(output, target).data[0]
-            pred = output.data.max(1)[
-                1]  # get the index of the max log-probability
-            correct += pred.eq(target.data).cpu().sum()
+        with torch.no_grad():
+            for data, target in loader:
+                data, target = data.to("cuda"), target.to("cuda")
+                output = model(data)
+                test_loss += F.nll_loss(output, target).item()
+                pred = output.data.max(1)[
+                    1]  # get the index of the max log-probability
+                correct += pred.eq(target.data).cpu().sum()
 
         test_loss = test_loss
         test_loss /= len(

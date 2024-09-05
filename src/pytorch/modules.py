@@ -28,6 +28,11 @@ class Linear(nn.Module):
         self.b = Parameter(torch.Tensor(self.out_))
 
         self.reset_parameters()
+        if self.unified:
+            self.linear = linearUnified
+        else:
+            self.linear = linear
+
 
     def reset_parameters(self):
         stdv = 1. / math.sqrt(self.out_)
@@ -36,9 +41,9 @@ class Linear(nn.Module):
 
     def forward(self, x):
         if self.unified:
-            return linearUnified(self.k)(x, self.w, self.b)
+            return linearUnified.apply(x, self.w, self.b, self.k)
         else:
-            return linear(self.k)(x, self.w, self.b)
+            return linear.apply(x, self.w, self.b, self.k)
 
     def __repr__(self):
         return '{} ({} -> {} <- {}{})'.format(self.__class__.__name__,

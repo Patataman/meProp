@@ -50,7 +50,7 @@ class NetLayer(nn.Module):
         return d
 
     def forward(self, x):
-        return F.log_softmax(self.model(x.view(-1, 784)))
+        return F.log_softmax(self.model(x.view(-1, 784)), dim=1)
 
     def reset_parameters(self):
         for m in self.modules():
